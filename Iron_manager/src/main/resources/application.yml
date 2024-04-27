@@ -1,0 +1,40 @@
+server:
+  port: 8501
+
+spring:
+
+  application:
+    name: Iron_manger
+  profiles:
+    active: dev
+
+  # redis：配置
+  data:
+    redis:
+      host: 192.168.11.100
+      port: 6379
+      password: 111111
+  # mysql：数据库配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.11.100:3306/db_spzx?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: admin123
+
+  # mybatis配置
+mybatis:
+  mapper-locations: classpath:/mapper/*/*.xml
+  config-location: classpath:/mybatis-config.xml
+
+# 自定义配置：相关获取都再配置类中
+spzx:
+  auth:
+    noAuthUrls: # 定义不需要进行拦截的路径
+      - /admin/system/index/login
+      - /admin/system/index/generateValidateCode
+  minio:  # 定义mino姓段的信息
+    endpointUrl: http://127.0.0.1:9000
+    accessKey: minioadmin
+    secreKey: minioadmin
+    bucketName: ironzx-bucket

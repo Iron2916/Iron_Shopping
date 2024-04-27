@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iron.mapper.SysUserMapper">
+
+
+    <sql id="columns">
+        id,username userName ,password,name,phone,avatar,description,status,create_time,update_time,is_deleted
+    </sql>
+
+    <insert id="saveUser">
+        insert into sys_user(id, userName, password, name, phone, avatar, description, status, create_time, update_time, is_deleted)
+                    values(#{id}, #{userName}, #{password}, #{phone}, #{avatar}, #{description}, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)
+    </insert>
+    <update id="updateSysUSer">
+        update sys_user
+            <set>
+                <if test="userName != null and userName != ''">
+                    user_name = #{userName},
+                </if>
+                <if test="password != null and password != ''">
+                    password = #{password},
+                </if>
+                <if test="name != null and name != ''">
+                    name = #{name},
+                </if>
+                <if test="phone != null and phone != ''">
+                    phone = #{phone},
+                </if>
+                <if test="avatar != null and avatar != ''">
+                    avater = #{avatar},
+                </if>
+                <if test="description != null and description != null">
+                    description = #{description},
+                </if>
+                <if test="status != null and status != ''">
+                    status = #{status},
+                </if>
+                ,update_time = CURRENT_TIMESTAMP()
+            </set>
+            where id = #{id}
+    </update>
+
+    <delete id="delteById">
+        update sys_user set id_deleted = 1 where user_id = #{userId};
+    </delete>
+
+    <select id="selectByUserName" resultType="com.iron.model.entity.system.SysUser">
+        select * from sys_user where userName = #{userName};
+    </select>
+    <select id="findeByPage" resultType="com.iron.model.entity.system.SysUser">
+        select * from sys_user
+            <where>
+                <if test="keyword != null and keyword != ''">
+                    user_name like concat("%", #{keyword}, "%") and
+                </if>
+                <if test="createTimeBegin != null and createTimeBegin != ''">
+                    create_time > #{createTimeBegin} and
+                </if>
+                <if test="createTimeEnd != null and createTimeEnd != ''">
+                    create_time &lt; #{createTimeEnd} and
+                </if>
+                idDeleted = 0
+            </where>
+    </select>
+
+
+</mapper>

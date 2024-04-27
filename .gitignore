@@ -1,0 +1,5 @@
+# Project exclude paths
+/Iron_common/common-service/target/
+/Iron_common/common-utils/target/
+/Iron_manager/target/
+/Iron_modle/target/

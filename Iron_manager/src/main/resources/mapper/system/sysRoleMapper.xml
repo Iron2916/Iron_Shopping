@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iron.mapper.SysRoleMapper">
+
+    <insert id="addSystemRole">
+        INSERT INTO sys_role (role_name, role_code, description, create_time, update_time, is_deleted)
+        VALUES (#{roleName}, #{roleCode}, #{description}, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)
+    </insert>
+
+    <update id="updateSystemRole">
+        update sys_role
+            <set>
+                <if test="roleName != null and roleName != ''">
+                    role_name = #{roleName},
+                </if>
+                <if test="roleCode != null and roleCode != ''">
+                    role_code = #{roleCode},
+                </if>
+                <if test="description != null and description != ''">
+                    description = #{description}
+                </if>
+            </set>
+            where id = #{id}
+    </update>
+
+    <update id="deleteById">
+        update sys_role set is_deleted = 1 where id = #{id};
+    </update>
+
+    <select id="findByPage" resultType="com.iron.model.entity.system.SysRole">
+        select * from sys_role
+        <where>
+            <if test="roleName != null and roleName != ''">
+                role_name like CONCAT('%', #{roleName}, '%')
+            </if>
+            and is_deleted = 0
+        </where>
+    </select>
+    <select id="getAllRoles" resultType="com.iron.model.entity.system.SysRole">
+        select * from sys_role
+    </select>
+    <select id="getUserRoles" resultType="com.iron.model.entity.system.SysRole">
+        select * from sys_user where id = #{userId}
+    </select>
+
+</mapper>
